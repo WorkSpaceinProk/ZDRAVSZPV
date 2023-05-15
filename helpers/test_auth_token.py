@@ -61,17 +61,29 @@ class TestAuthToken:
         assert response.status_code == 200, f"Response is not correct"
 
     #проверить наличие токена в ответе
-    def test_print_token(self):
 
-        response = requests.get("http://r78-test.zdrav.netrika.ru/authorization/api/newsession", self.headers)
+    def test_get_token(self):
 
-        key1 = 'token'
+        response = requests.get(url="http://r78-test.zdrav.netrika.ru/authorization/api/newsession", headers=
+                        {
+                            'Server': 'nginx',
+                                        'Date': 'Tue, 21 Mar 2023 09:27:18 GMT',
+                                        'Transfer-Encoding': 'chunked',
+                                        'Connection': 'keep-alive',
+                                        'X-Request-ID': 'N3RID1ca5d4de309a05dc44ee86e18d021758'
+                                        })
 
-        if key1 in response.json()['content']:
-            print([key1])
+        print(response.json()['content']['token'])
+
+        assert response.status_code == 200, f"Response is not correct"
+
+        key = 'token'
+
+        if key in response.json()['content']:
+            print([key])
 
         else:
-            print(f"Ключа {key1} нет в ответе")
+            print(f"Ключа {key} нет в ответе")
         assert response.status_code == 200, f"Response is not correct"
 
 

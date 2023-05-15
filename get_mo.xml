@@ -1,0 +1,24 @@
+
+                        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v2="http://www.rt-eu.ru/med/er/v2_0">
+                           <soapenv:Header/>
+                           <soapenv:Body>
+                              <v2:GetScheduleInfoRequest>
+                                  <v2:Session_ID>7</v2:Session_ID>
+                                  <v2:Specialist_SNILS>12345678901</v2:Specialist_SNILS>
+                                 <v2:MO_OID>1.2.643.5.1.13.13.12.2.78.8639.0.238289</v2:MO_OID>
+                            <!--   <v2:Service_Post>
+                                    <v2:Post>
+                                       <v2:Post_Id>58</v2:Post_Id>
+                                    </v2:Post>
+                                 <v2:Services_Info>
+                                      <v2:Service>
+                                       <v2:Service_Id>B04.047.002</v2:Service_Id>
+                                    </v2:Service>
+                                   </v2:Services_Info>
+                                 </v2:Service_Post>-->
+                          <v2:Referral_Id>78214000000471</v2:Referral_Id>
+                             <v2:Start_Date_Range>2023-03-30</v2:Start_Date_Range>
+                                    <v2:End_Date_Range>2023-04-28</v2:End_Date_Range>
+                              </v2:GetScheduleInfoRequest>
+                           </soapenv:Body>
+                        </soapenv:Envelope>
