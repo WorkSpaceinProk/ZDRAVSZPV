@@ -9,9 +9,9 @@ class TestFirstSmoke(BaseCase):
 
         assert get_patient_info.status_code == 200, 'Wrong response status code'
 
-    def test_get_mo_IE(self, get_mo_info_extended):
+    def test_get_mo_IE(self, get_mo_info_extended_v):
 
-        assert get_mo_info_extended.status_code == 200, 'Wrong response status code'
+        assert get_mo_info_extended_v.status_code == 200, 'Wrong response status code'
 
     def test_service_post_specs_info(self, get_service_post_specs_info):
 
