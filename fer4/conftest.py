@@ -346,7 +346,7 @@ def get_mo_info_extended_v(get_patient_info):
             E.Body(
                 E0.GetMOInfoExtendedRequest(
                     E0.Session_ID(GUID),
-                    E0.Booking_Type(Booking_Type_v))
+                    E0.Booking_Type(Booking_Type))
             )
         )
 
@@ -514,6 +514,41 @@ def get_schedule_info_exam(get_mo_resource_info):
     headers = {
         'Content-Type': 'text/xml',
         'SOAPAction': 'GetScheduleInfo'}
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+#фикстуры для сервиса записи на вакцинацию от ковида
+
+@pytest.fixture(scope="class")
+def get_mo_info_extended_cov(get_patient_info):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetMOInfoExtendedRequest(
+                    E0.Session_ID(GUID),
+                    E0.Booking_Type(Booking_Type_covid))
+            )
+        )
+
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetMOInfoExtended'}
+
     response = requests.post(url=URL, headers=headers, data=xml_request)
 
     print(response.text)
