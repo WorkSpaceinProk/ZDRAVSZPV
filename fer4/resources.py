@@ -21,6 +21,7 @@ Post_Id = '178'
 Start_Date_Range = '2023-05-17'
 End_Date_Range = '2023-05-28'
 Vaccination_Id = '11'
+Cards_Id = '512451409'
 
 good_data_1 = dict() #запись по направлению
 Pass_referral_1 = '1'
