@@ -61,70 +61,6 @@ class TestFirstSmoke(BaseCase):
         print(response0.text)
         assert response0.status_code == 200, 'Wrong response status code'
 
-    def test_get_mo_IE(self):
-
-        nslist = {
-            'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
-            'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
-
-        E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
-        E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
-
-        out = \
-            E.Envelope(
-                E.Header(),
-                E.Body(
-                    E0.GetMOInfoExtendedRequest(
-                        E0.Session_ID('9'),
-                        E0.Booking_Type('APPOINTMENT'))
-                )
-            )
-
-        xml_request = et.tostring(out, pretty_print=True)
-        print(xml_request)
-
-        self.headers= {
-            'Content-Type': 'text/xml',
-            'SOAPAction': 'GetMOInfoExtended'}
-
-        self.url = "http://r78-test.zdrav.netrika.ru/fer4/ErWebService"
-
-        response1 = requests.post(url=self.url, headers=self.headers, data=xml_request)
-
-        assert response1.status_code == 200, 'Wrong response status code'
-        print(response1.text)
-
-    def test_service_post_specs_info(self):
-
-        nslist = {
-            'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
-            'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
-
-        E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
-        E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
-
-        out = \
-            E.Envelope(
-                E.Header(),
-                E.Body(
-                    E0.GetServicePostSpecsInfoRequest(
-                        E0.Session_ID('9'),
-                        E0.MO_Id('1'))
-                )
-            )
-        xml_request = et.tostring(out, pretty_print=True)
-        print(xml_request)
-        self.headers = {
-                'Content-Type': 'text/xml',
-                'SOAPAction': 'GetServicePostSpecsInfo'}
-
-        self.url = "http://r78-test.zdrav.netrika.ru/fer4/ErWebService"
-
-        response2 = requests.post(url=self.url, headers=self.headers, data=xml_request)
-
-        assert response2.status_code == 200, 'Wrong response status code'
-        print(response2.text)
-
     def test_get_mo_resource_info(self):
         nslist = {
             'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
@@ -141,9 +77,10 @@ class TestFirstSmoke(BaseCase):
                         E0.Session_ID('9'),
                         E0.Service_Posts(
                             E0.Post(
-                                E0.Post_Id('178'))),
+                                E0.Post_Id('109'))),
                         E0.MO_OID_List(
                             E0.MO_OID('1.2.643.5.1.13.13.12.2.78.8639.0.238289')),
+                        E0.Cards_Id('512451409'),
                         E0.Start_Date_Range('2023-05-17'),
                         E0.End_Date_Range('2023-05-28'))
                 )
@@ -181,6 +118,7 @@ class TestFirstSmoke(BaseCase):
                         E0.Service_Posts(
                             E0.Post(
                                 E0.Post_Id('178'))),
+                        E0.Cards_Id('512451409'),
                         E0.Start_Date_Range('2023-05-17'),
                         E0.End_Date_Range('2023-05-28'))
                 )
