@@ -14,5 +14,6 @@ jobs:
         run: |
           python3.11 -m venv .venv
           source .venv/bin/activate
-          pip3 install -r requirements.txt
+          pip install -r requirements.txt
+          pip install --upgrade pip
           py -m pytest -v -s  fer4/test_smoke_free.py
