@@ -1,5 +1,5 @@
 
-good_data_0 = dict()  #свободная запись
+#свободная запись
 
 URL = "http://r78-test.zdrav.netrika.ru/fer4/ErWebService"
 GUID = 'b2d93270-20bb-4ed6-a63f-f6a178418786'
@@ -12,21 +12,26 @@ Last_Name = 'Ящеркин'
 Birth_Date = '1986-06-07'
 Sex = 'M'
 Phone = '9111223456'
-Pass_referral = '0'
 Booking_Type = 'APPOINTMENT'
-Booking_Type_covid = 'VACCINATION(COVID)'
-Booking_Type_d = 'DISPENSARY(ADVANCED)'
 MO_Id = '1'
 Post_Id = '178'
 Start_Date_Range = '2023-05-17'
 End_Date_Range = '2023-05-28'
-Vaccination_Id = '11'
-Cards_Id = '512451409'
+Pass_referral = '0'
 
-good_data_1 = dict() #запись по направлению
+#запись по направлению
 Pass_referral_1 = '1'
 Referral_id = '78214000000471'
+Patient_Info_Kind = 'ATTACHMENT' #используется вместо Pass_referral
 
+#запись на вакцинацию(не ковид!)
+Vaccination_Id = '11'
 
+#запись на вакцинацию ковид
+Booking_Type_covid = 'VACCINATION(COVID)'
 
-bad_data = dict()
+#запись на медосмотр
+Cards_Id = '512451409'
+
+#запись на диспансеризацию (углубленная)
+Booking_Type_d = 'DISPENSARY(ADVANCED)'

@@ -289,6 +289,46 @@ def get_patient_info_referral(get_token):
 
     return response
 
+@pytest.fixture(scope="class")
+def get_patient_info_referral_patient_info_kind(get_token):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetPatientInfoRequest(
+                    E0.Session_ID(GUID),
+                    E0.Patient_Data(
+                        E0.OMS_Number(OMS_NUMBER),
+                        E0.SNILS(PATIENT_SNILS),
+                        E0.First_Name(First_Name),
+                        E0.Last_Name(Last_Name),
+                        E0.Birth_Date(Birth_Date),
+                        E0.Sex(Sex),
+                        E0.Phone(Phone)),
+                    E0.Patient_Info_Kind(Patient_Info_Kind))
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetPatientInfo'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
 
 @pytest.fixture(scope="class")
 def get_schedule_info_referral(get_mo_resource_info):
