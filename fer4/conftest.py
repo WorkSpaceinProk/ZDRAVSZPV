@@ -321,3 +321,76 @@ def get_schedule_info_referral(get_mo_resource_info):
     print(response.text)
 
     return response
+
+@pytest.fixture(scope="class")
+def get_mo_info_extended(get_patient_info):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetMOInfoExtendedRequest(
+                    E0.Session_ID(GUID),
+                    E0.Booking_Type(Booking_Type))
+            )
+        )
+
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetMOInfoExtended'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+@pytest.fixture(scope="class")
+def get_mo_resource_info_v(get_service_post_specs_info):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetMOResourceInfoRequest(
+                    E0.Session_ID(GUID),
+                    E0.Vaccination_Id(Vaccination_Id),
+                    E0.Service_Posts(
+                        E0.Post(
+                            E0.Post_Id(Post_Id))),
+                    E0.MO_OID_List(
+                            E0.MO_OID(MO_OID_LPU)),
+                    E0.Start_Date_Range(Start_Date_Range),
+                    E0.End_Date_Range(End_Date_Range)
+                    )
+             )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetMOResourceInfo'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response

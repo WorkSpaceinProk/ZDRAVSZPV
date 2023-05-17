@@ -14,13 +14,17 @@ Sex = 'M'
 Phone = '9111223456'
 Pass_referral = '0'
 Booking_Type = 'APPOINTMENT'
+Booking_Type_v = ''
 MO_Id = '1'
 Post_Id = '178'
 Start_Date_Range = '2023-05-17'
 End_Date_Range = '2023-05-28'
+Vaccination_Id = '11'
 
 good_data_1 = dict() #запись по направлению
 Pass_referral_1 = '1'
-Referral_id = 78214000000471
+Referral_id = '78214000000471'
+
+
 
 bad_data = dict()
