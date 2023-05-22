@@ -2,7 +2,7 @@
 #свободная запись
 
 URL = "http://r78-test.zdrav.netrika.ru/fer4/ErWebService"
-GUID = '2323'
+GUID = '232323'
 OMS_NUMBER = '7849500830000203'
 PATIENT_SNILS = '000-666-666 25'
 DOCTOR_SNILS = '00000000000'
