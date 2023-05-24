@@ -1,3 +1,4 @@
+import pytest
 
 from lib.base_case import BaseCase
 
@@ -11,9 +12,9 @@ class TestFirstSmoke(BaseCase):
 
         assert get_patient_info.status_code == 200, 'Wrong response status code'
 
-    def test_get_mo_IE(self, get_mo_info_extended):
+    def test_get_mo_IE(self, get_mo_info_extended_cov):
 
-        assert get_mo_info_extended.status_code == 200, 'Wrong response status code'
+        assert get_mo_info_extended_cov.status_code == 200, 'Wrong response status code'
 
     def test_service_post_specs_info(self, get_service_post_specs_info):
 
@@ -23,9 +24,9 @@ class TestFirstSmoke(BaseCase):
 
         assert get_mo_resource_info.status_code == 200, 'Wrong response status code'
 
-    def test_get_schedule_info(self, get_schedule_info):
+    def test_get_schedule_info(self, get_schedule_info_cov):
 
-        assert get_schedule_info.status_code == 200, 'Wrong response status code'
+        assert get_schedule_info_cov.status_code == 200, 'Wrong response status code'
 
     def test_create_appointment(self, create_appointment):
 

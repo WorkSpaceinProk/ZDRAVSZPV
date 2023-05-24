@@ -2,7 +2,7 @@
 #свободная запись
 
 URL = "http://r78-test.zdrav.netrika.ru/fer4/ErWebService"
-GUID = '2323'
+GUID = '889'
 OMS_NUMBER = '7849500830000203'
 PATIENT_SNILS = '000-666-666 25'
 DOCTOR_SNILS = '00000000000'
@@ -29,6 +29,7 @@ Vaccination_Id = '11'
 
 #запись на вакцинацию ковид
 Booking_Type_covid = 'VACCINATION(COVID)'
+Room_OID = '1.2.643.5.1.13.13.12.2.78.8639.0.238289.244166'
 
 #запись на медосмотр
 Cards_Id = '512451409'
