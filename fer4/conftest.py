@@ -477,9 +477,7 @@ def get_schedule_info_v(get_mo_resource_info_v):
 
     return response
 
-
-    #фикстуры для сервиса углубленной диспансеризации
-
+    # фикстуры для сервиса углубленной диспансеризации с 2 методами
 @pytest.fixture(scope="class")
 def get_mo_info_extended_d(get_patient_info):
 
@@ -496,8 +494,8 @@ def get_mo_info_extended_d(get_patient_info):
             E.Body(
                 E0.GetMOInfoExtendedRequest(
                     E0.Session_ID(GUID),
-                    E0.Booking_Type(Booking_Type_d))
-            )
+                    E0.Booking_Type(Booking_Type_d)
+            ))
         )
 
     xml_request = et.tostring(out, pretty_print=True)
@@ -512,11 +510,157 @@ def get_mo_info_extended_d(get_patient_info):
     print(response.text)
 
     return response
-
-
-    #фикстуры для сервиса медосмотров (диспансеризации)
 @pytest.fixture(scope="class")
-def get_mo_resource_info_exam(get_patient_info):
+def get_service_post_specs_info_d(get_mo_info_extended_d):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetServicePostSpecsInfoRequest(
+                    E0.Session_ID(GUID),
+                    E0.MO_Id(MO_Id))
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetServicePostSpecsInfo'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+@pytest.fixture(scope="class")
+def get_mo_resource_info_d(get_service_post_specs_info_d):
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetMOResourceInfoRequest(
+                    E0.Session_ID(GUID),
+                    E0.Service_Posts(
+                        E0.Post(
+                            E0.Post_Id(Post_Id))),
+                    E0.MO_OID_List(
+                        E0.MO_OID(MO_OID_LPU)),
+                    E0.Start_Date_Range(Start_Date_Range),
+                    E0.End_Date_Range(End_Date_Range)
+                )
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetMOResourceInfo'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+@pytest.fixture(scope="class")
+def get_schedule_info_d(get_mo_resource_info_d):
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.GetScheduleInfoRequest(
+                    E0.Session_ID(GUID),
+                    E0.Specialist_SNILS(DOCTOR_SNILS),
+                    E0.MO_OID(MO_OID_LPU),
+                    E0.Service_Posts(
+                        E0.Post(
+                            E0.Post_Id(Post_Id))),
+                    E0.Start_Date_Range(Start_Date_Range),
+                    E0.End_Date_Range(End_Date_Range))
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'GetScheduleInfo'}
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+@pytest.fixture(scope="class")
+def get_slot_id_d(get_schedule_info_d):
+    xml_content = BeautifulSoup(get_schedule_info_d.text, 'xml')
+    slot_id = xml_content.find('Slot_Id').text
+    print(slot_id)
+    return slot_id
+
+@pytest.fixture(scope="class")
+def create_appointment_d(get_schedule_info_d, get_slot_id_d):
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.CreateAppointmentRequest(
+                    E0.Session_ID(GUID),
+                    E0.Slot_Id(get_slot_id_d),
+                    E0.MO_OID(MO_OID_LPU)
+                )
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'CreateAppointment'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+    #фикстуры для сервиса медосмотров без 2х методов(диспансеризации)
+
+
+@pytest.fixture(scope="class")
+def get_mo_resource_info_exam(get_service_post_specs_info_exam):
 
     nslist = {
         'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
@@ -700,6 +844,48 @@ def get_schedule_info_cov(get_mo_resource_info):
     headers = {
         'Content-Type': 'text/xml',
         'SOAPAction': 'GetScheduleInfo'}
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
+@pytest.fixture(scope="class")
+def get_slot_id_cov(get_schedule_info_cov):
+
+    xml_content = BeautifulSoup(get_schedule_info_cov.text, 'xml')
+    slot_id = xml_content.find('Slot_Id').text
+    print(slot_id)
+    return slot_id
+
+@pytest.fixture(scope="class")
+def create_appointment_cov(get_schedule_info_cov, get_slot_id_cov):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.CreateAppointmentRequest(
+                    E0.Session_ID(GUID),
+                    E0.Slot_Id(get_slot_id_cov),
+                    E0.MO_OID(MO_OID_LPU)
+                )
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'CreateAppointment'}
+
     response = requests.post(url=URL, headers=headers, data=xml_request)
 
     print(response.text)
