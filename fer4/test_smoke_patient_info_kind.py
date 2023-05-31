@@ -3,7 +3,7 @@ from lib.base_case import BaseCase
 from lxml import etree as et
 from lxml.builder import ElementMaker
 
-class TestFirstSmoke(BaseCase):
+class TestSmokePatientInfoKind(BaseCase):
     def test_get_token(self, get_token):
 
         assert get_token.status_code == 200, f"Response is not correct"

@@ -3,7 +3,7 @@ import pytest
 from lib.base_case import BaseCase
 
 
-class TestFirstSmoke(BaseCase):
+class TestSmokeCovid19(BaseCase):
 
     def test_get_token(self, get_token):
         assert get_token.status_code == 200, f"Response is not correct"
