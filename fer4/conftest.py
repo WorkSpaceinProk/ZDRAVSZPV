@@ -531,7 +531,6 @@ def get_mo_resource_info_exam(get_patient_info):
             E.Body(
                 E0.GetMOResourceInfoRequest(
                     E0.Session_ID(GUID),
-                    E0.Vaccination_Id(Vaccination_Id),
                     E0.Service_Posts(
                         E0.Post(
                             E0.Post_Id(Post_Id))),
@@ -557,7 +556,7 @@ def get_mo_resource_info_exam(get_patient_info):
     return response
 
 @pytest.fixture(scope="class")
-def get_schedule_info_exam(get_mo_resource_info):
+def get_schedule_info_exam(get_mo_resource_info_exam):
     nslist = {
         'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
         'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
@@ -592,6 +591,49 @@ def get_schedule_info_exam(get_mo_resource_info):
     print(response.text)
 
     return response
+
+@pytest.fixture(scope="class")
+def get_slot_id_exam(get_schedule_info_exam):
+
+    xml_content = BeautifulSoup(get_schedule_info_exam.text, 'xml')
+    slot_id = xml_content.find('Slot_Id').text
+    print(slot_id)
+    return slot_id
+
+@pytest.fixture(scope="class")
+def create_appointment_exam(get_schedule_info_exam, get_slot_id_exam):
+
+    nslist = {
+        'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'v2': 'http://www.rt-eu.ru/med/er/v2_0'}
+
+    E = ElementMaker(namespace="http://schemas.xmlsoap.org/soap/envelope/", nsmap=nslist)
+    E0 = ElementMaker(namespace="http://www.rt-eu.ru/med/er/v2_0", nsmap=nslist)
+
+    out = \
+        E.Envelope(
+            E.Header(),
+            E.Body(
+                E0.CreateAppointmentRequest(
+                    E0.Session_ID(GUID),
+                    E0.Slot_Id(get_slot_id_exam),
+                    E0.MO_OID(MO_OID_LPU)
+                )
+            )
+        )
+    xml_request = et.tostring(out, pretty_print=True)
+    print(xml_request)
+
+    headers = {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'CreateAppointment'}
+
+    response = requests.post(url=URL, headers=headers, data=xml_request)
+
+    print(response.text)
+
+    return response
+
 
 #фикстуры для сервиса записи на вакцинацию от ковида
 
