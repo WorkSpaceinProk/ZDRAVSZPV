@@ -328,7 +328,7 @@ def get_patient_info_referral_patient_info_kind(get_token):
 
     return response
 @pytest.fixture(scope="class")
-def get_mo_resource_info_referral(get_patient_info_referral):
+def get_mo_resource_info_referral(get_patient_info_referral_patient_info_kind):
 
     nslist = {
         'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
