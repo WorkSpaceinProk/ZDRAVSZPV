@@ -21,9 +21,9 @@ class TestFirstSmoke(BaseCase):
 
         assert get_mo_resource_info_v.status_code == 200, 'Wrong response status code'
 
-    def test_get_schedule_info(self, get_schedule_info):
+    def test_get_schedule_info(self, get_schedule_info_v):
 
-        assert get_schedule_info.status_code == 200, 'Wrong response status code'
+        assert get_schedule_info_v.status_code == 200, 'Wrong response status code'
 
     def test_create_appointment(self, create_appointment):
 
